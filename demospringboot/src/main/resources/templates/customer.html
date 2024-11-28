@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarangKita</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-icons-1.11.3/font/bootstrap-icons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top bg-dark border-bottom border-body" data-bs-theme="dark">
+      <a class="navbar-brand d-flex align-items-center mx-4" th:href="@{/home}">
+        <img th:src="@{/images/Navigation/Logo.png}" width="180px">
+      </a>
+
+      <button class="navbar-toggler mx-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> 
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav d-flex justify-content-end me-auto mb-2 mb-lg-0 px-4 col">
+          <li class="nav-item mx-2">
+            <a class="nav-link" th:href="@{/home}">HOME</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#layanan">LAYANAN</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#tentang">TENTANG KITA</a>
+          </li>
+          <li class="nav-item dropdown mx-2">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              PAGES
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#jenis">Jenis Layanan</a></li>
+              <li><a class="dropdown-item" href="#tim">Tim Kita</a></li>
+              <li><a class="dropdown-item" href="#apa">Apa Kata Mereka?</a></li>
+            </ul>
+          </li>
+          <span class="border-start"></span>
+          <li class="nav-item mx-2">
+            <a class="nav-link" th:href="@{/home}">KELUAR ADMIN</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CRUD Customer -->
+  <div class="container-xxl">
+    <h2>Customer</h2>
+    <form method="post" th:action="@{/customer/submit/{id}(id=${userRec?.getUserid()})}" th:object="${userInfo}"
+    class="mx-4">
+        <div class="row mb-3 mt-5">
+          <label for="id" class="form-label">ID</label>
+            <input
+            type="number"
+            id="userId"
+            name="userId"
+            th:value="${userRec!=null}? ${userRec.getUserid()} : '0'"
+            readonly
+          />
+        </div>
+        <div class="row mb-3">
+          <label for="nama" class="form-label">Nama</label>
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                th:value="${userRec?.getNama() != null ? userRec.getNama() : ''}"
+                required
+              />
+        </div>
+        <div class="row mb-3">
+          <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                th:value="${userRec?.getEmail() != null ? userRec.getEmail() : ''}"
+                required
+              />
+        </div>
+        <div class="row mb-3">
+          <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+              />
+        </div>
+        <div class="row mb-3">
+          <label for="confpassword" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                id="cpassword"
+                name="cpassword"
+                th:onkeyup="checkPass()"
+              />
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-danger" name="add">Add</button>
+              <button type="submit" class="btn btn-danger" name="edit">Edit</button>
+              <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-dark table-hover mt-5 ">
+      <thead>
+        <tr class="info">
+          <th>No</th>
+          <th>Customer ID</th>
+          <th>Nama</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+
+      <tbody th:each="c, no : ${userList}">
+        <tr th:with="checkid=${c.getUserid()}">
+          <td th:text="${no.count}"></td>
+          <td>
+            <a
+            th:href="@{/customer/{id}(id=${c.getUserid()})}"
+            th:text="${c.getUserid()}"
+            ></a>
+          </td>
+          <td th:text="${c.getNama()}"></td>
+          <td th:text="${c.getEmail()}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="container-fluid p-4">
+    <div class="row d-flex justify-content-center border-bottom border-dark py-4 m-4">
+      <div class="col-6">
+        <h5>CUSTOMER SERVICE</h5>
+          <i class="bi bi-headset"></i>
+          <a href="#" class="listFooter"> (021) 123456</a>
+        <div>
+          <i class="bi bi-envelope-fill"></i>
+          <a href="#" class="listFooter"> BarangKita@gmail.com</a>
+        </div>
+        <div class="d-flex gap-2 my-2">
+            <button class="tombolFooter btn"><i class="bi bi-instagram"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-tiktok"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-twitter-x"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-linkedin"></i></button>
+        </div>
+      </div>
+
+      <div class="col">
+        <h5>LAYANAN</h5>
+        <div><a href="#" class="listFooter">Regular</a></div>
+        <div><a href="#" class="listFooter">Instan</a></div>
+        <div><a href="#" class="listFooter">Ekonomi</a></div>
+        <div><a href="#" class="listFooter">Kargo</a></div>
+      </div>
+
+      <div class="col">
+        <h5>LAINNYA</h5>
+        <div><a href="#" class="listFooter">Lacak Pengiriman</a></div>
+        <div><a href="#" class="listFooter">FAQ</a></div>
+      </div>
+    </div>
+
+    <div class="row my-4 mx-2">
+      <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
+        <p>&copy; BarangKita Site, All Right Reserved. Designed By Celvin, Evander, Delon, Richwan</p>
+        <p>Distributed By Celvin</p>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end flex-wrap">
+        <a href="index.html" class="listFooter mx-2">Home</a> /
+        <a href="#" class="listFooter mx-2">Cookies</a> /
+        <a href="#" class="listFooter mx-2">Help</a> /
+        <a href="#" class="listFooter mx-2">FAQs</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#successModal').modal('show');
+    });
+  </script>
+</body>
+</html>

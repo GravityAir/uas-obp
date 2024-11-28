@@ -1,0 +1,148 @@
+<html>
+  <head>
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <script th:src="@{/js/home.js}"></script>
+  </head>
+  <body>
+    <div class="first-box">
+      <h2>Kurir</h2>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Customer ID</th>
+            <th>Resi</th>
+            <th>Tanggal</th>
+            <th>Nama Barang</th>
+            <th>Kategori Barang</th>
+            <th>Jumlah Barang</th>
+            <th>Berat Barang</th>
+            <th>Status</th>
+            <th>Jenis Pengiriman</th>
+          </tr>
+        </thead>
+        <tbody th:each="p, no : ${userList}">
+          <tr th:with="checkid=${p.getUserid()}">
+            <td th:text="${no.count}"></td>
+            <td>
+              <a
+                th:href="@{/pengiriman/{id}(id=${p.getUserid()})}"
+                th:text="${p.getUserid()}"
+              ></a>
+            </td>
+            <td>
+              <a
+                th:href="@{/pengiriman/{id}(id=${p.getResi()})}"
+                th:text="${p.getResi()}"
+              ></a>
+            </td>
+            <td th:text="${k.getTanggal()}"></td>
+            <td th:text="${k.getNamaBarang()}"></td>
+            <td th:text="${k.getKategoriBarang()}"></td>
+            <td th:text="${k.getJumlahBarang()}"></td>
+            <td th:text="${k.getBerat()}"></td>
+            <td th:text="${k.getStatus()}"></td>
+            <td th:text="${k.getJenisPengiriman()}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="second-box">
+      <div id="feedback-form">
+        <h2 class="header">Pengiriman</h2>
+        <form
+          th:action="@{/pengiriman/submit/{id}(id=${userRec?.getUserid()})}"
+          method="post"
+          th:object="${userInfo}"
+          class="form-group"
+        >
+          <label for="id" class="form-label">ID</label>
+          <input
+            type="number"
+            id="userId"
+            name="userId"
+            th:value="${userRec!=null}? ${userRec.getUserid()} : '0'"
+            readonly
+          />
+          <label for="nama" class="form-label">Resi</label>
+          <input
+            type="text"
+            id="nama"
+            name="nama"
+            th:value="${userRec!=null}? ${userRec.getResi()} : '0'"
+            required
+          />
+          <label for="tanggal" class="form-label">Tanggal</label>
+          <input
+            type="date"
+            id="tanggal"
+            name="tanggal"
+            th:value="${userRec?.getTanggal() != null ? userRec.getTanggal() : ''}"
+            required
+          />
+          <label for="namaBarang" class="form-label">Nama Barang</label>
+          <input
+            type="text"
+            id="namaBarang"
+            name="namaBarang"
+            th:value="${userRec?.getNamaBarang() != null ? userRec.getNamaBarang() : ''}"
+            required
+          />
+          <label for="kategoriBarang" class="form-label">Kategori Barang</label>
+          <input
+            type="text"
+            id="kategoriBarang"
+            name="kategoriBarang"
+            th:value="${userRec?.getKategoriBarang() != null ? userRec.getKategoriBarang() : ''}"
+            required
+          />
+          <label for="jumlahBarang" class="form-label">Jumlah Barang</label>
+          <input
+            type="text"
+            id="jumlahBarang"
+            name="jumlahBarang"
+            th:value="${userRec?.getJumlahBarang() != null ? userRec.getJumlahBarang() : ''}"
+            required
+          />
+          <label for="beratBarang" class="form-label">Berat Barang</label>
+          <input
+            type="text"
+            id="beratBarang"
+            name="beratBarang"
+            th:value="${userRec?.getBeratBarang() != null ? userRec.getBeratBarang() : ''}"
+            required
+          />
+          <label for="status" class="form-label">Status</label>
+          <input
+            type="text"
+            id="status"
+            name="status"
+            th:value="${userRec?.getStatus() != null ? userRec.getStatus() : ''}"
+            required
+          />
+          <label for="jenisPengiriman" class="form-label"
+            >Jenis Pengiriman</label
+          >
+          <input
+            type="text"
+            id="jenisPengiriman"
+            name="jenisPengiriman"
+            th:value="${userRec?.getJenisPengiriman() != null ? userRec.getJenisPengiriman() : ''}"
+            required
+          />
+          <button type="submit" class="btn btn-primary" name="add">Add</button>
+          <button type="submit" class="btn btn-primary" name="edit">
+            Edit
+          </button>
+          <button type="submit" class="btn btn-primary" name="delete">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
