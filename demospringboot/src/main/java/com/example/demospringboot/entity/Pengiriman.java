@@ -2,14 +2,18 @@ package com.example.demospringboot.entity;
 
 import jakarta.persistence.*;
 import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "pengiriman")
-public class Pengiriman extends Customer {
+public class Pengiriman {
+    @Id
     @Column(name = "resi")
     private int resi;
+
+    @ManyToOne
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
+    private Customer customer;
 
     @Column(name = "tanggal")
     private Date tanggal;
@@ -32,11 +36,14 @@ public class Pengiriman extends Customer {
     @Column(name = "jenis_pengiriman")
     private String jenisPengiriman;
 
+    @Column(name = "alamat_tujuan")
+    private String alamatTujuan;
+
     public Pengiriman() {}
 
-    public Pengiriman(String nama, String password, String email, int resi, Date tanggal, String namaBarang, String kategoriBarang, int jumlahBarang, double berat, String status, String jenisPengiriman) {
-        super(nama, password, email);
+    public Pengiriman(int resi, Customer customer, Date tanggal, String namaBarang, String kategoriBarang, int jumlahBarang, double berat, String status, String jenisPengiriman, String alamatTujuan) {
         this.resi = resi;
+        this.customer = customer;
         this.tanggal = tanggal;
         this.namaBarang = namaBarang;
         this.kategoriBarang = kategoriBarang;
@@ -44,6 +51,7 @@ public class Pengiriman extends Customer {
         this.berat = berat;
         this.status = status;
         this.jenisPengiriman = jenisPengiriman;
+        this.alamatTujuan = alamatTujuan;
     }
 
     // Getters and Setters
@@ -53,6 +61,14 @@ public class Pengiriman extends Customer {
 
     public void setResi(int resi) {
         this.resi = resi;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -110,5 +126,13 @@ public class Pengiriman extends Customer {
 
     public void setJenisPengiriman(String jenisPengiriman) {
         this.jenisPengiriman = jenisPengiriman;
+    }
+
+    public String getAlamatTujuan() {
+        return alamatTujuan;
+    }
+
+    public void setAlamatTujuan(String alamatTujuan) {
+        this.alamatTujuan = alamatTujuan;
     }
 }

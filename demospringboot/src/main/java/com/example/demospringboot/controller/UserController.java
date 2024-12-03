@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demospringboot.service.AdminService;
 import com.example.demospringboot.service.CustomerService;
 import com.example.demospringboot.service.KurirService;
-import com.example.demospringboot.service.PengirimanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demospringboot.entity.Admin;
 import com.example.demospringboot.entity.Customer;
 import com.example.demospringboot.entity.Kurir;
-import com.example.demospringboot.entity.Pengiriman;
 
 import org.springframework.ui.Model;
 import java.util.List;
@@ -32,9 +30,6 @@ public class UserController {
 
     @Autowired
     private KurirService kurirService;
-
-    @Autowired
-    private PengirimanService pengirimanService;
 
     @GetMapping(value={"/admin", "/admin/"})
     public String adminPage(Model model){
@@ -58,14 +53,6 @@ public class UserController {
         model.addAttribute("userList", userList);
         model.addAttribute("userInfo", new Kurir());
 		return "kurir";
-	}
-
-    @GetMapping(value={"/pengiriman", "/pengiriman/"})
-    public String pengirimanPage(Model model){
-        List<Pengiriman> userList = pengirimanService.getAllUsers();
-        model.addAttribute("userList", userList);
-        model.addAttribute("userInfo", new Pengiriman());
-		return "pengiriman";
 	}
 
     @GetMapping("/admin/{id}")
@@ -95,15 +82,6 @@ public class UserController {
 		return "kurir";
 	}
 
-    @GetMapping("/pengiriman/{id}")
-    public String pengirimanGetRec(Model model, @PathVariable("id") int id){
-        List<Pengiriman> userList = pengirimanService.getAllUsers();
-        Pengiriman userRec = pengirimanService.getUserById(id);
-        model.addAttribute("userList", userList);
-		model.addAttribute("userRec", userRec);
-		return "pengiriman";
-	}
-
     @PostMapping( value={"/admin/submit/", "/admin/submit/{id}"}, params={"add"})
     public String adminAdd(Model model, @ModelAttribute("userInfo") Admin userInfo){
         userInfo.setUserId(0);
@@ -121,7 +99,6 @@ public class UserController {
         Customer cust = customerService.addUser(userInfo);
         List<Customer> userList = customerService.getAllUsers();
         model.addAttribute("userList", userList);
-        model.addAttribute("successMessage", "Admin berhasil didaftarkan!");
         return "redirect:/customer";
     }
 
@@ -133,16 +110,6 @@ public class UserController {
         List<Kurir> userList = kurirService.getAllUsers();
         model.addAttribute("userList", userList);
         return "redirect:/kurir";
-    }
-
-    @PostMapping( value={"/pengiriman/submit/", "/pengiriman/submit/{id}"}, params={"add"})
-    public String pengirimanAdd(Model model, @ModelAttribute("userInfo") Pengiriman userInfo){
-        userInfo.setUserId(0);
-        @SuppressWarnings("unused")
-        Pengiriman pengiriman = pengirimanService.addUser(userInfo);
-        List<Pengiriman> userList = pengirimanService.getAllUsers();
-        model.addAttribute("userList", userList);
-        return "redirect:/pengiriman";
     }
 
     @PostMapping( value="/admin/submit/{id}", params={"edit"})
@@ -172,15 +139,6 @@ public class UserController {
 		return "redirect:/kurir";
 	}
 
-    @PostMapping( value="/pengiriman/submit/{id}", params={"edit"})
-    public String pengirimanEdit(Model model, @ModelAttribute("userInfo") Pengiriman userInfo, @PathVariable("id") int id){
-        @SuppressWarnings("unused")
-        Pengiriman adm = pengirimanService.updateUser(id,userInfo);
-        List<Pengiriman> userRec = pengirimanService.getAllUsers();
-        model.addAttribute("userList", userRec);
-		return "redirect:/pengiriman";
-	}
-
     @PostMapping( value="/admin/submit/{id}", params={"delete"})
     public String adminDelete(@PathVariable("id") int id){
         adminService.deleteUser(id);
@@ -195,13 +153,7 @@ public class UserController {
 
     @PostMapping( value="/kurir/submit/{id}", params={"delete"})
     public String kurirDelete(@PathVariable("id") int id){
-        customerService.deleteUser(id);
-        return "redirect:/kurir";
-	}
-
-    @PostMapping( value="/pengiriman/submit/{id}", params={"delete"})
-    public String pengirimanDelete(@PathVariable("id") int id){
-        pengirimanService.deleteUser(id);
-        return "redirect:/pengiriman";
+        kurirService.deleteUser(id);
+        return "redirect:/kurir";  
 	}
 }

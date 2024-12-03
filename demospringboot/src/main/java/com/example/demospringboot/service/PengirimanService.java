@@ -12,24 +12,27 @@ public class PengirimanService {
     @Autowired
     private PengirimanRepository pengirimanRepository;
 
-    public List<Pengiriman> getAllUsers() {
+    public List<Pengiriman> getAllPengiriman() {
         return pengirimanRepository.findAll();
     }
 
-    public Pengiriman getUserById(int id) {
-        return pengirimanRepository.findById(id).orElse(null);
+    public Pengiriman getPengirimanByResi(int resi) {
+        return pengirimanRepository.findById(resi).orElse(null);
     }
 
-    public Pengiriman addUser(Pengiriman per) {
-        return pengirimanRepository.save(per);
+    public Pengiriman addPengiriman(Pengiriman pengiriman) {
+        return pengirimanRepository.save(pengiriman);
     }
 
-    public Pengiriman updateUser(int id, Pengiriman per) {
-        per.setUserId(id);
-        return pengirimanRepository.save(per);
+    public Pengiriman updatePengiriman(int resi, Pengiriman pengiriman) {
+        if (pengirimanRepository.existsById(resi)) {
+            pengiriman.setResi(resi);
+            return pengirimanRepository.save(pengiriman);
+        }
+        return null;
     }
 
-    public void deleteUser(int id) {
-        pengirimanRepository.deleteById(id);
+    public void deletePengiriman(int resi) {
+        pengirimanRepository.deleteById(resi);
     }
 }

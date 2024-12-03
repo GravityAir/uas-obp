@@ -1,148 +1,198 @@
-<html>
-  <head>
-    <title>Home Page</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
-    <script th:src="@{/js/home.js}"></script>
-  </head>
-  <body>
-    <div class="first-box">
-      <h2>Kurir</h2>
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Customer ID</th>
-            <th>Resi</th>
-            <th>Tanggal</th>
-            <th>Nama Barang</th>
-            <th>Kategori Barang</th>
-            <th>Jumlah Barang</th>
-            <th>Berat Barang</th>
-            <th>Status</th>
-            <th>Jenis Pengiriman</th>
-          </tr>
-        </thead>
-        <tbody th:each="p, no : ${userList}">
-          <tr th:with="checkid=${p.getUserid()}">
-            <td th:text="${no.count}"></td>
-            <td>
-              <a
-                th:href="@{/pengiriman/{id}(id=${p.getUserid()})}"
-                th:text="${p.getUserid()}"
-              ></a>
-            </td>
-            <td>
-              <a
-                th:href="@{/pengiriman/{id}(id=${p.getResi()})}"
-                th:text="${p.getResi()}"
-              ></a>
-            </td>
-            <td th:text="${k.getTanggal()}"></td>
-            <td th:text="${k.getNamaBarang()}"></td>
-            <td th:text="${k.getKategoriBarang()}"></td>
-            <td th:text="${k.getJumlahBarang()}"></td>
-            <td th:text="${k.getBerat()}"></td>
-            <td th:text="${k.getStatus()}"></td>
-            <td th:text="${k.getJenisPengiriman()}"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarangKita</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-icons-1.11.3/font/bootstrap-icons.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
 
-    <div class="second-box">
-      <div id="feedback-form">
-        <h2 class="header">Pengiriman</h2>
-        <form
-          th:action="@{/pengiriman/submit/{id}(id=${userRec?.getUserid()})}"
-          method="post"
-          th:object="${userInfo}"
-          class="form-group"
-        >
-          <label for="id" class="form-label">ID</label>
-          <input
-            type="number"
-            id="userId"
-            name="userId"
-            th:value="${userRec!=null}? ${userRec.getUserid()} : '0'"
-            readonly
-          />
-          <label for="nama" class="form-label">Resi</label>
-          <input
-            type="text"
-            id="nama"
-            name="nama"
-            th:value="${userRec!=null}? ${userRec.getResi()} : '0'"
-            required
-          />
-          <label for="tanggal" class="form-label">Tanggal</label>
-          <input
-            type="date"
-            id="tanggal"
-            name="tanggal"
-            th:value="${userRec?.getTanggal() != null ? userRec.getTanggal() : ''}"
-            required
-          />
-          <label for="namaBarang" class="form-label">Nama Barang</label>
-          <input
-            type="text"
-            id="namaBarang"
-            name="namaBarang"
-            th:value="${userRec?.getNamaBarang() != null ? userRec.getNamaBarang() : ''}"
-            required
-          />
-          <label for="kategoriBarang" class="form-label">Kategori Barang</label>
-          <input
-            type="text"
-            id="kategoriBarang"
-            name="kategoriBarang"
-            th:value="${userRec?.getKategoriBarang() != null ? userRec.getKategoriBarang() : ''}"
-            required
-          />
-          <label for="jumlahBarang" class="form-label">Jumlah Barang</label>
-          <input
-            type="text"
-            id="jumlahBarang"
-            name="jumlahBarang"
-            th:value="${userRec?.getJumlahBarang() != null ? userRec.getJumlahBarang() : ''}"
-            required
-          />
-          <label for="beratBarang" class="form-label">Berat Barang</label>
-          <input
-            type="text"
-            id="beratBarang"
-            name="beratBarang"
-            th:value="${userRec?.getBeratBarang() != null ? userRec.getBeratBarang() : ''}"
-            required
-          />
-          <label for="status" class="form-label">Status</label>
-          <input
-            type="text"
-            id="status"
-            name="status"
-            th:value="${userRec?.getStatus() != null ? userRec.getStatus() : ''}"
-            required
-          />
-          <label for="jenisPengiriman" class="form-label"
-            >Jenis Pengiriman</label
-          >
-          <input
-            type="text"
-            id="jenisPengiriman"
-            name="jenisPengiriman"
-            th:value="${userRec?.getJenisPengiriman() != null ? userRec.getJenisPengiriman() : ''}"
-            required
-          />
-          <button type="submit" class="btn btn-primary" name="add">Add</button>
-          <button type="submit" class="btn btn-primary" name="edit">
-            Edit
-          </button>
-          <button type="submit" class="btn btn-primary" name="delete">
-            Delete
-          </button>
-        </form>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top bg-dark border-bottom border-body" data-bs-theme="dark">
+      <a class="navbar-brand d-flex align-items-center mx-4" th:href="@{/home}">
+        <img th:src="@{/images/Navigation/Logo.png}" width="180px">
+      </a>
+
+      <button class="navbar-toggler mx-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span> 
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav d-flex justify-content-end me-auto mb-2 mb-lg-0 px-4 col">
+          <li class="nav-item mx-2">
+            <a class="nav-link" th:href="@{/home}">HOME</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#layanan">LAYANAN</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#tentang">TENTANG KITA</a>
+          </li>
+          <li class="nav-item dropdown mx-2">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              PAGES
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#jenis">Jenis Layanan</a></li>
+              <li><a class="dropdown-item" href="#tim">Tim Kita</a></li>
+              <li><a class="dropdown-item" href="#apa">Apa Kata Mereka?</a></li>
+            </ul>
+          </li>
+          <span class="border-start"></span>
+          <li class="nav-item mx-2">
+            <a class="nav-link" th:href="@{/home}">KELUAR CUSTOMER</a>
+          </li>
+        </ul>
       </div>
     </div>
-  </body>
+  </nav>
+
+  <!-- CRUD Pengiriman -->
+  <div class="container-xxl">
+    <h2>Pengiriman</h2>
+    <form method="post" th:action="@{/pengiriman/submit/{resi}(resi=${pengirimanRec?.getResi()})}" th:object="${pengirimanInfo}"
+        class="mx-4">
+        <div class="row mb-3 mt-5">
+            <label for="resi" class="form-label">Resi</label>
+            <input type="number" id="resi" name="resi" th:value="${pengirimanRec!=null}? ${pengirimanRec.getResi()} : '0'" readonly />
+        </div>
+        <div class="row mb-3">
+            <label for="email" class="form-label">Customer Email</label>
+            <input type="email" id="email" name="customer.email" th:value="${pengiriman?.customer?.email}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="tanggal" class="form-label">Tanggal</label>
+            <input type="date" id="tanggal" name="tanggal" th:value="${#dates.format(pengiriman?.tanggal, 'yyyy-MM-dd')}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="namaBarang" class="form-label">Nama Barang</label>
+            <input type="text" id="namaBarang" name="namaBarang" th:value="${pengirimanRec?.getNamaBarang() != null ? pengirimanRec.getNamaBarang() : ''}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="kategoriBarang" class="form-label">Kategori Barang</label>
+            <input type="text" id="kategoriBarang" name="kategoriBarang" th:value="${pengirimanRec?.getKategoriBarang() != null ? pengirimanRec.getKategoriBarang() : ''}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="jumlahBarang" class="form-label">Jumlah Barang</label>
+            <input type="number" id="jumlahBarang" name="jumlahBarang" th:value="${pengirimanRec?.getJumlahBarang() != null ? pengirimanRec.getJumlahBarang() : ''}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="berat" class="form-label">Berat</label>
+            <input type="number" step="0.1" id="berat" name="berat" th:value="${pengirimanRec?.getBerat() != null ? pengirimanRec.getBerat() : ''}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="jenisPengiriman" class="form-label">Jenis Pengiriman</label>
+            <input type="text" id="jenisPengiriman" name="jenisPengiriman" th:value="${pengirimanRec?.getJenisPengiriman() != null ? pengirimanRec.getJenisPengiriman() : ''}" required />
+        </div>
+        <div class="row mb-3">
+            <label for="alamatTujuan" class="form-label">Alamat Tujuan</label>
+            <textarea id="alamatTujuan" name="alamatTujuan" required th:value="${pengirimanRec?.getAlamatTujuan() != null ? pengirimanRec.getAlamatTujuan() : ''}"></textarea>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-danger" name="add">Add</button>
+                <button type="submit" class="btn btn-danger" name="edit">Edit</button>
+                <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-dark table-hover mt-5">
+      <thead>
+          <tr>
+              <th>No</th>
+              <th>Resi</th>
+              <th>Customer Email</th>
+              <th>Tanggal</th>
+              <th>Nama Barang</th>
+              <th>Kategori Barang</th>
+              <th>Jumlah Barang</th>
+              <th>Berat</th>
+              <th>Jenis Pengiriman</th>
+              <th>Alamat Tujuan</th>
+              <th>Status</th>
+          </tr>
+      </thead>
+      <tbody th:each="pengiriman, no : ${pengirimanList}">
+          <tr>
+              <td th:text="${no.count}"></td>
+              <td>
+                  <a th:href="@{/pengiriman/{resi}(resi=${pengiriman.resi})}" th:text="${pengiriman.resi}"></a>
+              </td>
+              <td th:text="${pengiriman.customer.email}"></td>
+              <td th:text="${#dates.format(pengiriman.tanggal, 'yyyy-MM-dd')}"></td>
+              <td th:text="${pengiriman.namaBarang}"></td>
+              <td th:text="${pengiriman.kategoriBarang}"></td>
+              <td th:text="${pengiriman.jumlahBarang}"></td>
+              <td th:text="${pengiriman.berat}"></td>
+              <td th:text="${pengiriman.jenisPengiriman}"></td>
+              <td th:text="${pengiriman.alamatTujuan}"></td>
+              <td th:text="${pengiriman.status}"></td>
+          </tr>
+      </tbody>
+    </table>
+  
+  </div>
+
+  <!-- Footer -->
+  <footer class="container-fluid p-4">
+    <div class="row d-flex justify-content-center border-bottom border-dark py-4 m-4">
+      <div class="col-6">
+        <h5>CUSTOMER SERVICE</h5>
+          <i class="bi bi-headset"></i>
+          <a href="#" class="listFooter"> (021) 123456</a>
+        <div>
+          <i class="bi bi-envelope-fill"></i>
+          <a href="#" class="listFooter"> BarangKita@gmail.com</a>
+        </div>
+        <div class="d-flex gap-2 my-2">
+            <button class="tombolFooter btn"><i class="bi bi-instagram"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-tiktok"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-twitter-x"></i></button>
+            <button class="tombolFooter btn"><i class="bi bi-linkedin"></i></button>
+        </div>
+      </div>
+
+      <div class="col">
+        <h5>LAYANAN</h5>
+        <div><a href="#" class="listFooter">Regular</a></div>
+        <div><a href="#" class="listFooter">Instan</a></div>
+        <div><a href="#" class="listFooter">Ekonomi</a></div>
+        <div><a href="#" class="listFooter">Kargo</a></div>
+      </div>
+
+      <div class="col">
+        <h5>LAINNYA</h5>
+        <div><a href="#" class="listFooter">Lacak Pengiriman</a></div>
+        <div><a href="#" class="listFooter">FAQ</a></div>
+      </div>
+    </div>
+
+    <div class="row my-4 mx-2">
+      <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
+        <p>&copy; BarangKita Site, All Right Reserved. Designed By Celvin, Evander, Delon, Richwan</p>
+        <p>Distributed By Celvin</p>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end flex-wrap">
+        <a href="index.html" class="listFooter mx-2">Home</a> /
+        <a href="#" class="listFooter mx-2">Cookies</a> /
+        <a href="#" class="listFooter mx-2">Help</a> /
+        <a href="#" class="listFooter mx-2">FAQs</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#successModal').modal('show');
+    });
+  </script>
+</body>
 </html>
