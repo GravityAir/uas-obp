@@ -24,4 +24,9 @@ public class Customer extends User {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public void Info() {
+        System.out.println("Customer Berhasil Didaftarkan");
+    }
 }

@@ -10,3 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface KurirRepository extends JpaRepository<Kurir, Integer> {
         Kurir findByNama(String nama);
 }
+

@@ -25,4 +25,9 @@ public class Kurir extends User {
     public String getNoPlat() {
         return noPlat;
     }
+
+    @Override
+    public void Info() {
+        System.out.println("Kurir Berhasil Didaftarkan");
+    }
 }

@@ -6,14 +6,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "pengiriman")
-public class Pengiriman {
+public class Pengiriman{
     @Id
     @Column(name = "resi")
     private int resi;
 
-    @ManyToOne
-    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
-    private Customer customer;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "tanggal")
     private Date tanggal;
@@ -41,9 +40,9 @@ public class Pengiriman {
 
     public Pengiriman() {}
 
-    public Pengiriman(int resi, Customer customer, Date tanggal, String namaBarang, String kategoriBarang, int jumlahBarang, double berat, String status, String jenisPengiriman, String alamatTujuan) {
+    public Pengiriman(int resi, String email, Date tanggal, String namaBarang, String kategoriBarang, int jumlahBarang, double berat, String status, String jenisPengiriman, String alamatTujuan) {
         this.resi = resi;
-        this.customer = customer;
+        this.email = email;
         this.tanggal = tanggal;
         this.namaBarang = namaBarang;
         this.kategoriBarang = kategoriBarang;
@@ -63,12 +62,12 @@ public class Pengiriman {
         this.resi = resi;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

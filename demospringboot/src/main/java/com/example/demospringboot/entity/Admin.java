@@ -12,4 +12,9 @@ public class Admin extends User {
     public Admin(String nama, String password) {
         super(nama, password);
     }
+
+    @Override
+    public void Info() {
+        System.out.println("Admin Berhasil Ditambahkan");
+    }
 }

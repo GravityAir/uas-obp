@@ -55,6 +55,14 @@ public class UserController {
 		return "kurir";
 	}
 
+    @GetMapping(value={"/kurir2", "/kurir2/"})
+    public String kurirPage2(Model model){
+        List<Kurir> userList = kurirService.getAllUsers();
+        model.addAttribute("userList", userList);
+        model.addAttribute("userInfo", new Kurir());
+		return "kurirDashboard";
+	}
+
     @GetMapping("/admin/{id}")
     public String adminGetRec(Model model, @PathVariable("id") int id){
         List<Admin> userList = adminService.getAllUsers();
@@ -89,6 +97,7 @@ public class UserController {
         Admin adm = adminService.addUser(userInfo);
         List<Admin> userList = adminService.getAllUsers();
         model.addAttribute("userList", userList);
+        userInfo.Info();
         return "redirect:/admin";
     }
 
@@ -99,7 +108,19 @@ public class UserController {
         Customer cust = customerService.addUser(userInfo);
         List<Customer> userList = customerService.getAllUsers();
         model.addAttribute("userList", userList);
+        userInfo.Info();
         return "redirect:/customer";
+    }
+
+    @PostMapping( value={"/customer2/submit/", "/customer2/submit/{id}"}, params={"add"})
+    public String customerAdd2(Model model, @ModelAttribute("userInfo") Customer userInfo){
+        userInfo.setUserId(0);
+        @SuppressWarnings("unused")
+        Customer cust = customerService.addUser(userInfo);
+        List<Customer> userList = customerService.getAllUsers();
+        model.addAttribute("userList", userList);
+        userInfo.Info();
+        return "redirect:/home";
     }
 
     @PostMapping( value={"/kurir/submit/", "/kurir/submit/{id}"}, params={"add"})
@@ -109,6 +130,7 @@ public class UserController {
         Kurir kurir = kurirService.addUser(userInfo);
         List<Kurir> userList = kurirService.getAllUsers();
         model.addAttribute("userList", userList);
+        userInfo.Info();
         return "redirect:/kurir";
     }
 

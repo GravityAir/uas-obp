@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demospringboot.service.AdminService;
 import com.example.demospringboot.service.CustomerService;
 import com.example.demospringboot.service.KurirService;
+import com.example.demospringboot.service.PengirimanService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demospringboot.entity.Admin;
 import com.example.demospringboot.entity.Customer;
 import com.example.demospringboot.entity.Kurir;
+import com.example.demospringboot.entity.Pengiriman;
+
 
 import org.springframework.ui.Model;
 
@@ -28,6 +33,9 @@ public class LoginController {
 
     @Autowired
     private KurirService kurirService;
+
+    @Autowired
+    private PengirimanService pengirimanService;
 
     @GetMapping("/home")
     public String home() {
@@ -55,12 +63,15 @@ public class LoginController {
     }
 
     @PostMapping("/kurir/login")
-    public String loginKurir(@RequestParam String nama, @RequestParam String password, Model model) {
-        Kurir kurir = kurirService.login(nama, password);
-        if (kurir != null) {
-            return "kurirDashboard";
-        }
-        model.addAttribute("errorMessage", "Invalid username or password");
-        return "redirect:/home";
+public String loginKurir(@RequestParam String nama, @RequestParam String password, Model model) {
+    Kurir kurir = kurirService.login(nama, password);
+    if (kurir != null) {
+        List<Pengiriman> pengirimanList = pengirimanService.getAllPengiriman();
+        model.addAttribute("pengirimanList", pengirimanList);
+        model.addAttribute("pengirimanInfo", new Pengiriman());
+        return "kurirDashboard";
     }
+    model.addAttribute("errorMessage", "Invalid username or password");
+    return "kurirLogin";
+}
 }
